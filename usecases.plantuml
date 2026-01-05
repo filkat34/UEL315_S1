@@ -1,0 +1,23 @@
+@startuml Diagramme des classes d'utilisation
+left to right direction
+
+/' Définition des acteurs '/
+:Clients:
+:Conseillers:
+
+/' Définition des cas d'utilisation '/
+package "Système de paiment"{
+usecase "Vérifier le solde" as UC1
+usecase "Effectuer un virement" as UC2
+usecase "Demander un prêt" as UC3
+usecase "Consulter les comptes clients" as UC4
+usecase "Approuver un prêt" as UC5
+}
+/' Associations entre acteurs et cas d'utilisation '/
+:Clients: --> UC1
+:Clients: --> UC2
+:Clients: --> UC3
+:Conseillers: --> UC4
+:Conseillers: --> UC5
+
+@enduml
