@@ -14,11 +14,12 @@ usecase "Demander un prêt" as UC3
 usecase "Consulter les comptes clients" as UC4
 usecase "Approuver un prêt" as UC5
 }
+
 /' Associations entre acteurs et cas d'utilisation '/
 :Clients: --> UC1
 :Clients: --> UC2
 :Clients: --> UC3
-:Conseillers: --> UC4
-:Conseillers: --> UC5
+UC4 <-- :Conseillers:
+UC5 <-- :Conseillers:
 
 @enduml
