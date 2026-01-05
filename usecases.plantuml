@@ -7,6 +7,7 @@ left to right direction
 
 /' Définition des cas d'utilisation '/
 package "Système de paiment"{
+usecase "Se connecter" as UC0
 usecase "Vérifier le solde" as UC1
 usecase "Effectuer un virement" as UC2
 usecase "Demander un prêt" as UC3
