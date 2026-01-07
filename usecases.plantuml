@@ -1,7 +1,10 @@
 @startuml Diagramme des classes d'utilisation
 left to right direction
 
-/' DÉFINITION DES ACTEURS '/
+' ========================================================
+' DÉFINITION DES ACTEURS 
+' ========================================================
+
 /' Acteurs humains '/
 :Clients: as Ac_Client
 :Conseillers: as Ac_Conseiller
@@ -13,33 +16,50 @@ left to right direction
 :Système d'investissement: as Sys_Invest
 :Système de notification: as Sys_Notif
 
-/' DÉFINITION DES CAS D'UTILISATION '/
-rectangle "Application Bancaire" as APPLI {
+' ========================================================
+' DÉFINITION DES CAS D'UTILISATION
+' ========================================================
 
-package "Système de paiement"{
-    usecase "Se connecter" as PAI_0
-    usecase "Vérifier le solde" as PAI_1
-    usecase "Effectuer un virement" as PAI_2
-    usecase "Demander un prêt" as PAI_3
-    usecase "Consulter les comptes clients" as PAI_4
-    usecase "Approuver un prêt" as PAI_5
+rectangle "Application Bancaire" as Appli {
+
+    package "Système de paiement"{
+        usecase "Se connecter" as PAI_0
+        usecase "Vérifier le solde" as PAI_1
+        usecase "Effectuer un virement" as PAI_2
+        usecase "Demander un prêt" as PAI_3
+        usecase "Consulter les comptes clients" as PAI_4
+        usecase "Approuver un prêt" as PAI_5
+    }
+
+    package "Investissements" {
+        usecase "Consulter la performance des investissements" as INVEST_0
+        usecase "Recevoir conseils selon profil de risque" as INVEST_1
+        usecase "Acheter et/ou vendre une action" as INVEST_2
+        usecase "Donner conseils personnalisés selon profil de risque" as INVEST_3
+    }
+
+    package "Gestion des documents" {
+        usecase "Télécharger relevés et documents" as DOC_0
+        usecase "Soumettre document pour prêt et autres services" as DOC_1
+        usecase "Reçevoir notification nouveau document ou nouvelle échéance" as DOC_2
+    }
+
+    package "Conseillers et Support" {
+        usecase "Attribuer un conseiller personnel à un client" as SUPP_0
+        usecase "Voir conseiller personnel attribué" as SUPP_1
+        usecase "Planifier un rendez-vous" as SUPP_2
+        usecase "Consulter les comptes client" as SUPP_3
+        usecase "Donner un conseil financier" as SUPP_4
+
+    }
 }
 
-package "Investissements" {
-    usecase "Consulter portefeuille et performance" as INVEST_0
-    usecase "Recevoir conseils selon profil de risque" as INVEST_1
-    usecase "Acheter et/ou vendre une action" as INVEST_2
-  }
+' ========================================================
+' ASSOCIATION ENTRE ACTEURS/SYSTÈMES ET CAS D'UTILISATION 
+' ========================================================
 
-package "Documents" {
-    usecase "Télécharger relevés et documents" as DOC_0
-    usecase "Soumettre document" as DOC_1
-    usecase "Reçevoir notification de nouveau document" as DOC_2
-  }
-}
-
-/' ASSOCIATIONS ENTRE ACTEURS/SYSTÈMES ET CAS D'UTILISATION '/
 /' Clients '/
+:Clients: --> PAI_0
 :Clients: --> PAI_1
 :Clients: --> PAI_2
 :Clients: --> PAI_3
@@ -48,13 +68,38 @@ package "Documents" {
 :Clients: --> INVEST_1
 :Clients: --> INVEST_2
 
+:Clients: --> DOC_0
+:Clients: --> DOC_1
+:Clients: --> DOC_2
+
+:Clients: --> SUPP_1
+:Clients: --> SUPP_2
+
 /' Conseillers '/
+PAI_0 <-- :Conseillers:
 PAI_4 <-- :Conseillers:
 PAI_5 <-- :Conseillers:
 
+INVEST_3 <-- :Conseillers:
+
+SUPP_2 <-- :Conseillers:
+SUPP_3 <-- :Conseillers:
+SUPP_4 <-- :Conseillers:
+
 /' Administrateurs '/
+PAI_4 <-- :Administrateurs:
+
+DOC_0 <-- :Administrateurs:
+DOC_2 <-- :Administrateurs:
+
+SUPP_0 <-- :Administrateurs:
 
 /' Systèmes '/
+:Sys_Paiement: --> PAI_2
+:Sys_Paiement: --> PAI_3
 
+:Sys_Invest: --> INVEST_2
+
+:Sys_Notif: --> DOC_2
 
 @enduml
