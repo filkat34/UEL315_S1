@@ -10,48 +10,48 @@ left to right direction
 
 package "Application bancaire" {
 
-		usecase "S'inscrire" as AUTH1
-		usecase "Se connecter" as AUTH2
+		usecase "S'inscrire" as AUTH1 #e67877ff
+		usecase "Se connecter" as AUTH2 #e67877ff
 
-		usecase "Visualiser soldes et historiques" as TRANS1
-		usecase "Déposer/Retirer des fonds" as TRANS2
-		usecase "Faire un virement interne/externe" as TRANS3
-		usecase "Demander un relevé de transaction" as TRANS4
-		usecase "Mettre en place un paiement récurrent" as TRANS5
+		usecase "Visualiser soldes et historiques" as TRANS1 #C8E6C9
+		usecase "Déposer/Retirer des fonds" as TRANS2 #C8E6C9
+		usecase "Faire un virement interne/externe" as TRANS3 #C8E6C9
+		usecase "Demander un relevé de transaction" as TRANS4 #C8E6C9
+		usecase "Mettre en place un paiement récurrent" as TRANS5 #C8E6C9
 	
-		usecase "Demander un prêt" as LOAN1
-		usecase "Suivre sa demande de prêt" as LOAN2
-		usecase "Visualiser son plan de remboursement" as LOAN3
+		usecase "Demander un prêt" as LOAN1 #FFF9C4
+		usecase "Suivre sa demande de prêt" as LOAN2 #FFF9C4
+		usecase "Visualiser son plan de remboursement" as LOAN3 #FFF9C4
 	
-		usecase "Acheter/vendre actions, obligations" as INVEST1
-		usecase "Suivre ses investissements" as INVEST2
-		usecase "Demander des conseils d'investissement" as INVEST3
+		usecase "Acheter/vendre actions, obligations" as INVEST1 #B2F7EF
+		usecase "Suivre ses investissements" as INVEST2 #B2F7EF
+		usecase "Demander des conseils d'investissement" as INVEST3 #B2F7EF
 	
-		usecase "Consulter ses relevés et documents" as DOC1
-		usecase "Déposer des documents" as DOC2
-		usecase "Recevoir des notifications de nouveaux documents/échéances" as DOC3
+		usecase "Consulter ses relevés et documents" as DOC1 #D7C4F3
+		usecase "Déposer des documents" as DOC2	 #D7C4F3
+		usecase "Recevoir des notifications de nouveaux documents/échéances" as DOC3 #D7C4F3
 	
-		usecase "Mettre à jour son adresse" as ADD1
+		usecase "Mettre à jour son adresse" as ADD1 #BBDEFB
 	
-		usecase "Demander un rendez-vous avec un conseiller" as RDV1
+		usecase "Demander un rendez-vous avec un conseiller" as RDV1 #CFFDE1
 	
-		usecase "Communiquer par messagerie" as MSG1
-		usecase "Recevoir des notifications des messages importants/non lus" as MSG2
-		usecase "Consulter l'historique des conversations" as MSG3
-		usecase "Assister à une consultation/conseils financiers en visioconférence" as MSG4
+		usecase "Envoyer/Recevoir des messages" as MSG1#C8E6C9
+		usecase "Recevoir des notifications des messages importants/non lus" as MSG2 #C8E6C9
+		usecase "Consulter l'historique des conversations" as MSG3 #C8E6C9
+		usecase "Participer à une consultation par visioconférence" as MSG4 #C8E6C9
 	
-		usecase "Visualiser les comptes des clients" as DASH1
-		usecase "Gérer le planning des rendez-vous avec les clients" as DASH2
-		usecase "Gérer les demandes de prêt des clients" as DASH3
+		usecase "Visualiser les comptes des clients" as DASH1 #FFF9C4
+		usecase "Gérer le planning des rendez-vous avec les clients" as DASH2 #FFF9C4
+		usecase "Gérer les demandes de prêt des clients" as DASH3 #FFF9C4
 	
-		usecase "Ajouter, modifier, supprimer des utilisateurs" as ADMIN1
-		usecase "Attribuer un conseiller personnel au client" as ADMIN2
-		usecase "Gérer les droits d'accès" as ADMIN3
+		usecase "Ajouter, modifier, supprimer des utilisateurs" as ADMIN1 #FFCDD2
+		usecase "Attribuer un conseiller personnel au client" as ADMIN2 #FFCDD2
+		usecase "Gérer les droits d'accès" as ADMIN3 #FFCDD2
 	}
 
 ' Associations entre acteurs et cas d'utilisation '
 
-AUTH2 <. AUTH1 :<<includes>>
+AUTH2 <.. AUTH1 :<<includes>>
 :Client: --> TRANS1
 :Client: --> TRANS2
 :Client: --> TRANS3
@@ -59,12 +59,13 @@ AUTH2 <. AUTH1 :<<includes>>
 :Client: --> TRANS5
 :Client: --> LOAN1
 
-LOAN1 .> LOAN2 : <<extends>>
-LOAN1 .> LOAN3 : <<extends>>
+LOAN1 ..> LOAN2 : <<extends>>
+LOAN1 ..> LOAN3 : <<extends>>
 
 :Client: --> INVEST1
-INVEST1 .> INVEST2 : <<extends>>
-:Client: --> INVEST3
+INVEST1 ..> INVEST2 : <<extends>>
+INVEST1 ..> INVEST3 : <<extends>>
+
 :Client: --> DOC1
 :Client: --> DOC2
 :Client: --> DOC3
