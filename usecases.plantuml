@@ -2,15 +2,15 @@
 left to right direction
 
 /' Définition des acteurs humains '/
-:Clients:
-:Conseillers:
-:Administrateurs:
+:Clients: as Client
+:Conseillers: as Conseiller
+:Administrateurs: as Admin
 
 /' Définition des acteurs systèmes '/
-:Système de paiement:
-:Système de vérification d'adresse:
-:Interface d'investissement:
-:Système de notification:
+:Système de paiement: as SysPaiement
+:Système de vérification d'adresse: as SysAdresse
+:Interface d'investissement: as IntInvest
+:Système de notification: as SysNotif
 
 /' Définition des cas d'utilisation '/
 package "Système de paiement"{
