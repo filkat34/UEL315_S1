@@ -1,0 +1,288 @@
+@startuml Diagramme des classes d'utilisation
+left to right direction
+
+' ======================================================== '
+' STYLE '
+' ======================================================== '
+
+!theme cerulean
+skinparam packageStyle rectangle
+skinparam usecaseStyle roundcorner
+skinparam roundcorner 2
+
+skinparam LineThickness 2
+
+skinparam rectangle {
+    BorderColor #000000
+    FontColor #000000
+    FontSize 32
+}
+
+skinparam actor {
+    FontColor #2C3E50
+    FontSize 32
+    FontStyle bold
+}
+
+skinparam usecase {
+    BackgroundColor White
+    BorderColor #2C3E50
+    FontColor #2C3E50
+    FontSize 20
+}
+
+' ======================================================== '
+' DÉFINITION DES ACTEURS '
+' ======================================================== '
+
+/' Acteurs humains '/
+:Clients: as Ac_Client #43A047
+:Conseillers: as Ac_Conseiller #1E88E5
+:Administrateurs: as Ac_Admin #E53935
+
+/' Acteurs systèmes '/
+:Système de paiement: as Sys_Paiement #F9A825
+:Système de vérification d'adresse: as Sys_Adresse #F9A825
+:Système d'investissement: as Sys_Invest #F9A825
+:Système de notification: as Sys_Notif #F9A825
+
+' ======================================================== '
+' DÉFINITION DES CAS D'UTILISATION '
+' ======================================================== '
+
+rectangle "Application Bancaire" as Appli #F2F2F2{
+
+    package "Accès Application" #FFCDD2 {
+        usecase "S'inscrire" as ACC_0
+        usecase "Se désinscrire" as ACC_1
+        usecase "Se connecter" as ACC_2
+        usecase "Se déconnecter" as ACC_3
+        usecase "Activer 2FA" as ACC_4
+        usecase "Désactiver 2FA" as ACC_5
+        usecase "Vérifier codes 2FA" as ACC_6
+        usecase "Réinitialiser codes 2FA" as ACC_7
+    }
+
+    package "Profils Clients" #BBDEFB {
+        usecase "Gérer (ajouter/modifier/supprimer) données profil" as PROF_0
+        usecase "Gérer (ajouter/modifier/supprimer) adresses" as PROF_1
+        usecase "Vérification sécurisée adresse" as PROF_2
+        usecase "Déterminer le profil de risque" as PROF_3
+    }
+
+    package "Comptes et Transactions" #C8E6C9 {
+        usecase "Consulter soldes comptes" as TRANS_0
+        usecase "Consulter historiques transactions comptes" as TRANS_1
+        usecase "Déposer fonds" as TRANS_2
+        usecase "Retirer fonds" as TRANS_3
+        usecase "Effectuer virement interne" as TRANS_4
+        usecase "Effectuer virement externe" as TRANS_5
+        usecase "Configurer (ajouter/modifier/supprimer) paiement récurrent ou programmé" as TRANS_6
+    }
+
+    package "Prêts" #FFF9C4 {
+        usecase "Simuler prêt" as PRET_0
+        usecase "Faire demande de prêt" as PRET_1
+        usecase "Approuver/refuser demande prêt" as PRET_2
+        usecase "Suivre statut demande de prêt" as PRET_3
+        usecase "Consulter plan remboursement et transactions liées au prêt" as PRET_4
+    }
+
+    package "Investissements" #B2F7EF {
+        usecase "Consulter performance investissements" as INVEST_0
+        usecase "Recevoir conseils personnalisés selon profil de risque" as INVEST_1
+        usecase "Acheter et/ou vendre une action" as INVEST_2
+        usecase "Donner conseils personnalisés selon profil de risque" as INVEST_3
+    }
+
+    package "Documents" #D7C4F3 {
+        usecase "Télécharger relevés et documents" as DOC_0
+        usecase "Soumettre document (prêt, autres services)" as DOC_1
+        usecase "Générer relevé de transaction" as DOC_2
+        usecase "Recevoir notification nouveau document ou nouvelle échéance" as DOC_3
+    }
+
+    package "Support" #CFFDE1 {
+        usecase "Attribuer conseiller personnel à un client" as SUPP_0
+        usecase "Voir conseiller personnel attribué" as SUPP_1
+        usecase "Gérer (planifier/modifier/annuler) rendez-vous" as SUPP_2
+        usecase "Consulter dossier client (comptes, documents, demandes)" as SUPP_3
+        usecase "Donner conseil financier" as SUPP_4
+    }
+
+    package "Messagerie (sécurisée)" #FFD8B1 {
+        usecase "Envoyer message" as MESS_0
+        usecase "Lire messages" as MESS_1
+        usecase "Accès à l'historique conversations pour référence future" as MESS_2
+        usecase "Envoyer une notification (message non lu ou important)" as MESS_3
+    }
+}
+
+' ========================================================'
+' INCLUDES (obligatoire) / EXTENDS (facultatif)'
+' ========================================================'
+
+' PROFIL/ADRESSE '
+PROF_1 ..[#8E44AD]> PROF_2 : <<include>> 
+' activation du système de vérification d'adresse lors de la modification d'une adresse '
+
+PROF_0 ..[#8E44AD]> ACC_2 : <<include>>
+PROF_1 ..[#8E44AD]> ACC_2 : <<include>>
+' connexion obligatoire (client/conseiller/admin) avant de pourvoir modifier données profil et adresses '
+
+' ACCÈS/2FA '
+ACC_4 ..[#8E44AD]> ACC_6 : <<include>>
+ACC_5 ..[#8E44AD]> ACC_6 : <<include>>
+ACC_7 ..[#8E44AD]> ACC_6 : <<include>>
+' vérification des codes obligatoire avant de pouvoir activer/désactiver 2FA '
+
+' COMPTES/TRANSACTIONS '
+TRANS_0 ..[#8E44AD]> ACC_2 : <<include>>
+TRANS_1 ..[#8E44AD]> ACC_2 : <<include>>
+TRANS_2 ..[#8E44AD]> ACC_2 : <<include>>
+TRANS_3 ..[#8E44AD]> ACC_2 : <<include>>
+TRANS_4 ..[#8E44AD]> ACC_2 : <<include>>
+TRANS_5 ..[#8E44AD]> ACC_2 : <<include>>
+TRANS_6 ..[#8E44AD]> ACC_2 : <<include>>
+' connexion obligatoire (client/conseiller/admin) avant de pouvoir consulter comptes ou réaliser des transactions '
+
+' DOCUMENTS '
+DOC_0 ..[#8E44AD]> ACC_2 : <<include>>
+DOC_1 ..[#8E44AD]> ACC_2 : <<include>>
+DOC_2 ..[#8E44AD]> ACC_2 : <<include>>
+' connexion obligatoire (client/conseiller/admin) avant de pouvoir télécharger/soumettre/générer document '
+
+'  PRÊTS '
+PRET_0 ..[#8E44AD]> ACC_2 : <<include>>
+PRET_1 ..[#8E44AD]> ACC_2 : <<include>>
+PRET_3 ..[#8E44AD]> ACC_2 : <<include>>
+PRET_4 ..[#8E44AD]> ACC_2 : <<include>>
+' connexion obligatoire (client) avant de réaliser des actions de prêt '
+
+PRET_1 ..[#8E44AD]> PRET_0 : <<include>>
+' simulation de prêt obligatoire avant de faire une demande de prêt '
+
+PRET_1 ..[#8E44AD]> DOC_1 : <<include>>
+' soumission du document de prêt obligatoire avant d'effectuer une demande de prêt '
+
+PRET_2 ..[#8E44AD]> ACC_2 : <<include>>
+' connexion obligatoire (conseiller/admin) avant approbation/refus demande de prêt '
+
+' INVESTISSEMENTS '
+INVEST_0 ..[#8E44AD]> ACC_2 : <<include>>
+INVEST_1 ..[#8E44AD]> ACC_2 : <<include>>
+INVEST_2 ..[#8E44AD]> ACC_2 : <<include>>
+INVEST_3 ..[#8E44AD]> ACC_2 : <<include>>
+' connexion obligatoire (client/conseiller) avant de pourvoir réaliser des actions d’investissement '
+
+PROF_3 ..[#8E44AD]> ACC_2 : <<include>>
+' connexion obligatoire (client) pour déterminer profil de risque '
+
+INVEST_1 ..[#8E44AD]> PROF_3 : <<include>>
+INVEST_2 ..[#8E44AD]> PROF_3 : <<include>>
+' conseils et prise de décision achat/vente s'appuient sur le profil de risque '
+
+'  SUPPORT/RENDEZ-VOUS '
+SUPP_1 ..[#8E44AD]> ACC_2 : <<include>>
+SUPP_2 ..[#8E44AD]> ACC_2 : <<include>>
+' connexion obligatoire (client/conseiller)avant de voir/attribuer conseiller et gérer rendez-vous
+
+MESS_0 ..[#8E44AD]> SUPP_2 : <<extend>>
+' Envoie d'un message (pendant ou après) lors de la gestion de rendez-vous '
+
+' ========================================================
+' ASSOCIATION ENTRE ACTEURS/SYSTÈMES ET CAS D'UTILISATION 
+' ========================================================
+
+/' Clients '/
+Ac_Client -[#43A047]-> ACC_0
+Ac_Client -[#43A047]-> ACC_1
+Ac_Client -[#43A047]-> ACC_2
+Ac_Client -[#43A047]-> ACC_3
+Ac_Client -[#43A047]-> ACC_4
+Ac_Client -[#43A047]-> ACC_5
+
+Ac_Client -[#43A047]-> PROF_0
+Ac_Client -[#43A047]-> PROF_1
+Ac_Client -[#43A047]-> PROF_3
+
+Ac_Client -[#43A047]-> TRANS_0
+Ac_Client -[#43A047]-> TRANS_1
+Ac_Client -[#43A047]-> TRANS_2
+Ac_Client -[#43A047]-> TRANS_3
+Ac_Client -[#43A047]-> TRANS_4
+Ac_Client -[#43A047]-> TRANS_5
+Ac_Client -[#43A047]-> TRANS_6
+
+Ac_Client -[#43A047]-> PRET_0
+Ac_Client -[#43A047]-> PRET_1
+Ac_Client -[#43A047]-> PRET_3
+Ac_Client -[#43A047]-> PRET_4
+
+Ac_Client -[#43A047]-> INVEST_0
+Ac_Client -[#43A047]-> INVEST_1
+Ac_Client -[#43A047]-> INVEST_2
+
+Ac_Client -[#43A047]-> DOC_0
+Ac_Client -[#43A047]-> DOC_1
+Ac_Client -[#43A047]-> DOC_2
+
+Ac_Client -[#43A047]-> SUPP_1
+Ac_Client -[#43A047]-> SUPP_2
+
+Ac_Client -[#43A047]-> MESS_0
+Ac_Client -[#43A047]-> MESS_1
+Ac_Client -[#43A047]-> MESS_2
+
+/' Conseillers '/
+Ac_Conseiller -[#1E88E5]-> ACC_2
+Ac_Conseiller -[#1E88E5]-> ACC_3
+
+Ac_Conseiller -[#1E88E5]-> PRET_2
+
+Ac_Conseiller -[#1E88E5]-> INVEST_3
+
+Ac_Conseiller -[#1E88E5]-> SUPP_2
+Ac_Conseiller -[#1E88E5]-> SUPP_3
+Ac_Conseiller -[#1E88E5]-> SUPP_4
+
+Ac_Conseiller -[#1E88E5]-> DOC_0
+Ac_Conseiller -[#1E88E5]-> DOC_2
+
+Ac_Conseiller -[#1E88E5]-> MESS_0
+Ac_Conseiller -[#1E88E5]-> MESS_1
+Ac_Conseiller -[#1E88E5]-> MESS_2
+
+/' Administrateurs '/
+Ac_Admin -[#E53935]-> ACC_2
+Ac_Admin -[#E53935]-> ACC_3
+Ac_Admin -[#E53935]-> ACC_7
+
+Ac_Admin -[#E53935]-> SUPP_0
+Ac_Admin -[#E53935]-> SUPP_3
+
+Ac_Admin -[#E53935]-> DOC_0
+Ac_Admin -[#E53935]-> DOC_3
+
+Ac_Admin -[#E53935]-> PRET_2
+
+/' Systèmes '/
+Sys_Adresse -[#FDD835]-> PROF_2
+' système vérifie adresse '
+
+Sys_Paiement -[#FDD835]-> TRANS_2
+Sys_Paiement -[#FDD835]-> TRANS_3
+Sys_Paiement -[#FDD835]-> TRANS_5
+Sys_Paiement -[#FDD835]-> TRANS_6
+' système exécute actions de transactions '
+
+Sys_Invest -[#FDD835]-> INVEST_2
+' système exécute achat/vente '
+
+Sys_Notif -[#FDD835]-> DOC_3
+Sys_Notif -[#FDD835]-> MESS_3
+Sys_Notif -[#FDD835]-> PRET_3
+Sys_Notif -[#FDD835]-> ACC_6
+' système envoie notifications (docs, messages, statut prêt) + codes 2FA '
+
+@enduml

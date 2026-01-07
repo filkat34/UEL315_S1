@@ -1,0 +1,88 @@
+@startuml Diagramme des cas d'utilisation
+left to right direction
+
+' Définition des acteurs '
+:Client:
+:Conseiller:
+:Administrateur:
+
+' Définition des packages et cas d'utilisation '
+
+package "Application bancaire" {
+
+		usecase "S'inscrire" as AUTH1
+		usecase "Se connecter" as AUTH2
+
+		usecase "Visualiser soldes et historiques" as TRANS1
+		usecase "Déposer/Retirer des fonds" as TRANS2
+		usecase "Faire un virement interne/externe" as TRANS3
+		usecase "Demander un relevé de transaction" as TRANS4
+		usecase "Mettre en place un paiement récurrent" as TRANS5
+	
+		usecase "Demander un prêt" as LOAN1
+		usecase "Suivre sa demande de prêt" as LOAN2
+		usecase "Visualiser son plan de remboursement" as LOAN3
+	
+		usecase "Acheter/vendre actions, obligations" as INVEST1
+		usecase "Suivre ses investissements" as INVEST2
+		usecase "Demander des conseils d'investissement" as INVEST3
+	
+		usecase "Consulter ses relevés et documents" as DOC1
+		usecase "Déposer des documents" as DOC2
+		usecase "Recevoir des notifications de nouveaux documents/échéances" as DOC3
+	
+		usecase "Mettre à jour son adresse" as ADD1
+	
+		usecase "Demander un rendez-vous avec un conseiller" as RDV1
+	
+		usecase "Communiquer par messagerie" as MSG1
+		usecase "Recevoir des notifications des messages importants/non lus" as MSG2
+		usecase "Consulter l'historique des conversations" as MSG3
+		usecase "Assister à une consultation/conseils financiers en visioconférence" as MSG4
+	
+		usecase "Visualiser les comptes des clients" as DASH1
+		usecase "Gérer le planning des rendez-vous avec les clients" as DASH2
+		usecase "Gérer les demandes de prêt des clients" as DASH3
+	
+		usecase "Ajouter, modifier, supprimer des utilisateurs" as ADMIN1
+		usecase "Attribuer un conseiller personnel au client" as ADMIN2
+		usecase "Gérer les droits d'accès" as ADMIN3
+	}
+
+' Associations entre acteurs et cas d'utilisation '
+
+AUTH2 <. AUTH1 :<<includes>>
+:Client: --> TRANS1
+:Client: --> TRANS2
+:Client: --> TRANS3
+:Client: --> TRANS4
+:Client: --> TRANS5
+:Client: --> LOAN1
+
+LOAN1 .> LOAN2 : <<extends>>
+LOAN1 .> LOAN3 : <<extends>>
+
+:Client: --> INVEST1
+INVEST1 .> INVEST2 : <<extends>>
+:Client: --> INVEST3
+:Client: --> DOC1
+:Client: --> DOC2
+:Client: --> DOC3
+:Client: --> ADD1
+:Client: --> RDV1
+:Client: --> MSG1
+:Client: --> MSG2
+:Client: --> MSG3
+:Client: --> MSG4
+DASH1 <-- :Conseiller:
+DASH2 <-- :Conseiller:
+DASH3 <-- :Conseiller:
+MSG1 <-- :Conseiller:
+MSG2 <-- :Conseiller:
+MSG3 <-- :Conseiller:
+MSG4 <-- :Conseiller:
+ADMIN1 <-- :Administrateur:
+ADMIN2 <-- :Administrateur:
+ADMIN3 <-- :Administrateur:
+
+@enduml
