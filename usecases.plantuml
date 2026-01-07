@@ -1,7 +1,7 @@
 @startuml Diagramme des classes d'utilisation
 left to right direction
 
-/' Définition des acteurs '/
+/' Définition des acteurs humains '/
 :Clients:
 :Conseillers:
 :Administrateurs:
@@ -15,6 +15,12 @@ package "Système de paiement"{
     secase "Consulter les comptes clients" as UC4
     usecase "Approuver un prêt" as UC5
 }
+
+package "Investissements" {
+    usecase "Consulter portefeuille et performance" as UC_Portefeuille
+    usecase "Recevoir conseils selon profil de risque" as UC_Conseils
+    usecase "Acheter et/ou vendre une action" as UC_AchatVenteAction
+  }
 
 /' Associations entre acteurs et cas d'utilisation '/
 :Clients: --> UC1
