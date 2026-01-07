@@ -6,6 +6,12 @@ left to right direction
 :Conseillers:
 :Administrateurs:
 
+/' Définition des acteurs systèmes '/
+:Système de paiement:
+:Système de vérification d'adresse:
+:Interface d'investissement:
+:Système de notification:
+
 /' Définition des cas d'utilisation '/
 package "Système de paiement"{
     usecase "Se connecter" as UC0
