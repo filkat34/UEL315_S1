@@ -10,6 +10,7 @@ rectangle "Système \nde paiement" AS SYS2 #F9A825
 rectangle "AI finance \net investissements" AS SYS3 #F9A825
 rectangle "Système \nde notification" AS SYS4 #F9A825
 rectangle "Système \nde gestion des \nprêts" AS SYS8 #F9A825
+rectangle "Système \nd'authentification" AS SYS9 #F9A825
 
 ' Définition des packages et cas d'utilisation '
 
@@ -18,6 +19,7 @@ package "Application bancaire" {
 		usecase "S'inscrire" as AUTH1 #e67877ff
 		usecase "Se connecter" as AUTH2 #e67877ff
 		usecase "Se déconnecter" as AUTH3 #e67877ff
+		usecase "Vérification des informations \nde connexion" as AUTH4 #e67877ff
 
 		usecase "Visualiser soldes et historiques" as TRANS1 #C8E6C9
 		usecase "Déposer/Retirer des fonds" as TRANS2 #C8E6C9
@@ -63,41 +65,43 @@ package "Application bancaire" {
 
 ' Associations entre acteurs et cas d'utilisation '
 
-AUTH1 ..> AUTH2 :<<includes>>
-AUTH2 .> AUTH3 :<<extends>>
+AUTH2 ..> AUTH1 :<<include>>
+AUTH2 <. AUTH3 :<<extend>>
+AUTH2 ..> AUTH4 :<<include>>
+AUTH4 --> SYS9
 
 :Client: --> TRANS1
 :Client: --> TRANS2
 :Client: --> TRANS3
 :Client: --> TRANS4
 :Client: --> TRANS5
-TRANS2 ..> TRANS6 : <<includes>>
-TRANS3 ..> TRANS6 : <<includes>>
-TRANS5 ..> TRANS6 : <<includes>>
+TRANS2 ..> TRANS6 : <<include>>
+TRANS3 ..> TRANS6 : <<include>>
+TRANS5 ..> TRANS6 : <<include>>
 TRANS6 --> SYS2
 
 :Client: --> LOAN1
 :Client: --> LOAN4
-LOAN1 ..> LOAN2 : <<extends>>
-LOAN1 ..> LOAN3 : <<extends>>
-LOAN4 ..>  LOAN5 : <<includes>>
+LOAN1 <.. LOAN2 : <<extend>>
+LOAN1 <.. LOAN3 : <<extend>>
+LOAN4 ..>  LOAN5 : <<include>>
 LOAN5 --> SYS8
 
 :Client: --> INVEST1
 :Client: --> INVEST3
-INVEST1 ..> INVEST2 : <<extends>>
-INVEST3 ..> INVEST4 : <<includes>>
+INVEST1 <.. INVEST2 : <<extend>>
+INVEST3 ..> INVEST4 : <<include>>
 INVEST4 --> SYS3
 
 :Client: --> DOC1
 :Client: --> DOC2
 
 :Client: --> NOT1
-NOT1 ..> NOT2 : <<includes>>
+NOT1 ..> NOT2 : <<include>>
 NOT2 --> SYS4
 
 :Client: --> ADD1
-ADD1 ..> ADD2 : <<includes>>
+ADD1 ..> ADD2 : <<include>>
 ADD2 --> SYS1
 
 :Client: --> RDV1
