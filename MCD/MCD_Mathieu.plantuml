@@ -1,0 +1,400 @@
+@startuml MCD - Application bancaire
+
+' Configuration
+skinparam linetype ortho
+
+' ========== ENTITÉS ==========
+
+entity "AGENCE" as AGENCE {
+  * codeAgence : String <<PK>>
+  --
+  * nom : String
+  * adresse : String
+  * telephone : String
+}
+
+entity "UTILISATEUR" as UTILISATEUR {
+  * id : String <<PK>>
+  --
+  * nom : String
+  * prenom : String
+  * email : String
+  * motDePasse : String
+  * dateCreation : Date
+  * typeUtilisateur : String {Client, Conseiller, Administrateur}
+}
+
+entity "CLIENT" as CLIENT {
+  * numeroClient : String <<PK>>
+  --
+  * dateNaissance : Date
+  * telephone : String
+  idUtilisateur : String <<FK>>
+  codeAgence : String <<FK>>
+}
+
+entity "CONSEILLER" as CONSEILLER {
+  * numeroConseiller : String <<PK>>
+  --
+  * specialite : String
+  idUtilisateur : String <<FK>>
+  codeAgence : String <<FK>>
+}
+
+entity "ADMINISTRATEUR" as ADMINISTRATEUR {
+  * numeroAdmin : String <<PK>>
+  --
+  * niveauAcces : Integer
+  idUtilisateur : String <<FK>>
+}
+
+entity "JOURNAL_CONNEXION" as LOG {
+  * idLog : String <<PK>>
+  --
+  * date : Date
+  * adresseIP : String
+  * succes : Boolean
+  * motifEchec : String
+  idUtilisateur : String <<FK>>
+}
+
+entity "COMPTE" as COMPTE {
+  * numeroCompte : String <<PK>>
+  --
+  * iban : String
+  * bic : String
+  * decouvertAutorise : Decimal
+  * solde : Decimal
+  * dateOuverture : Date
+  * typeCompte : String {COURANT, EPARGNE, ENTREPRISE}
+}
+
+entity "TITULAIRE_COMPTE" as TITULAIRE {
+  * numeroClient : String <<FK>>
+  * numeroCompte : String <<FK>>
+}
+
+entity "CARTE_BANCAIRE" as CARTE {
+  * numeroCarte : String <<PK>>
+  --
+  * dateExpiration : Date
+  * cryptogramme : String
+  * codePin : String
+  * estBloquee : Boolean
+  * plafondPaiement : Decimal
+  * plafondRetrait : Decimal
+  * sansContactActive : Boolean
+  * typeCarte : String {DEBIT, CREDIT, PREPAYEE}
+  numeroCompte : String <<FK>>
+}
+
+entity "BENEFICIAIRE" as BENEFICIAIRE {
+  * idBeneficiaire : String <<PK>>
+  --
+  * nomTitulaire : String
+  * iban : String
+  * bic : String
+  * surnom : String
+  numeroClient : String <<FK>>
+}1
+
+entity "TRANSACTION" as TRANSACTION {
+  * idTransaction : String <<PK>>
+  --
+  * montant : Decimal
+  * dateTransaction : Date
+  * typeTransaction : String {DEPOT, RETRAIT, VIREMENT, PAIEMENT_RECURRENT}
+  * statut : String {EN_ATTENTE, VALIDEE, REJETEE, ANNULEE}
+  numeroCompte : String <<FK>>
+}
+
+entity "VIREMENT" as VIREMENT {
+  * idVirement : String <<PK>>
+  --
+  * compteSource : String
+  * compteDestination : String
+  * reference : String
+  * typeVirement : String
+  idTransaction : String <<FK>>
+}
+
+entity "PAIEMENT_RECURRENT" as PAIEMENT {
+  * idPaiement : String <<PK>>
+  --
+  * frequence : String
+  * dateDebut : Date
+  * dateFin : Date
+  * montantPaiement : Decimal
+  idTransaction : String <<FK>>
+}
+
+entity "PRET" as PRET {
+  * idPret : String <<PK>>
+  --
+  * montant : Decimal
+  * tauxInteret : Decimal
+  * duree : Integer
+  * statut : String {EN_COURS_EVALUATION, APPROUVE, REJETE, EN_REMBOURSEMENT, REMBOURSE}
+  * dateCreation : Date
+  numeroClient : String <<FK>>
+}
+
+entity "SIMULATION_PRET" as SIMULATION {
+  * idSimulation : String <<PK>>
+  --
+  * montant : Decimal
+  * duree : Integer
+  * tauxInteret : Decimal
+  * mensualite : Decimal
+  numeroClient : String <<FK>>
+}
+
+entity "PLAN_REMBOURSEMENT" as PLAN {
+  * idPlan : String <<PK>>
+  --
+  * montantTotal : Decimal
+  idPret : String <<FK>>
+}
+
+entity "MENSUALITE" as MENSUALITE {
+  * idMensualite : String <<PK>>
+  --
+  * numero : Integer
+  * montant : Decimal
+  * dateEcheance : Date
+  * capital : Decimal
+  * interets : Decimal
+  idPlan : String <<FK>>
+}
+
+entity "PORTEFEUILLE_INVESTISSEMENT" as PORTEFEUILLE {
+  * numeroCompte : String <<PK, FK>>
+  --
+  * valeurTotale : Decimal
+}
+
+entity "INVESTISSEMENT" as INVESTISSEMENT {
+  * idInvestissement : String <<PK>>
+  --
+  * quantite : Integer
+  * prixAchat : Decimal
+  * dateAchat : Date
+  * typeInvestissement : String {ACTION, OBLIGATION}
+  numeroCompte : String <<FK>>
+}
+
+entity "ACTION" as ACTION {
+  * idAction : String <<PK>>
+  --
+  * symbole : String
+  * nomEntreprise : String
+  * prixActuel : Decimal
+  idInvestissement : String <<FK>>
+}
+
+entity "OBLIGATION" as OBLIGATION {
+  * idObligation : String <<PK>>
+  --
+  * emetteur : String
+  * tauxCoupon : Decimal
+  * dateEcheance : Date
+  idInvestissement : String <<FK>>
+}
+
+entity "CONSEIL_INVESTISSEMENT" as CONSEIL {
+  * idConseil : String <<PK>>
+  --
+  * contenu : String
+  * dateGeneration : Date
+  * typeConseil : String
+  numeroClient : String <<FK>>
+}
+
+entity "DOCUMENT" as DOCUMENT {
+  * idDocument : String <<PK>>
+  --
+  * nom : String
+  * typeDocument : String {RELEVE_COMPTE, CONTRAT, JUSTIFICATIF, AUTRE}
+  * dateCreation : Date
+  * cheminFichier : String
+  numeroClient : String <<FK>>
+}
+
+entity "RELEVE" as RELEVE {
+  * idReleve : String <<PK>>
+  --
+  * periode : String
+  * dateGeneration : Date
+  idDocument : String <<FK>>
+}
+
+entity "MESSAGE" as MESSAGE {
+  * idMessage : String <<PK>>
+  --
+  * contenu : String
+  * dateEnvoi : Date
+  * lu : Boolean
+  idExpediteur : String <<FK>>
+  idDestinataire : String <<FK>>
+  idConversation : String <<FK>>
+}
+
+entity "CONVERSATION" as CONVERSATION {
+  * idConversation : String <<PK>>
+  --
+  * dateCreation : Date
+}
+
+entity "VISIOCONFERENCE" as VISIO {
+  * idSession : String <<PK>>
+  --
+  * dateDebut : Date
+  * duree : Integer
+  * lien : String
+}
+
+entity "ADRESSE" as ADRESSE {
+  * idAdresse : String <<PK>>
+  --
+  * rue : String
+  * ville : String
+  * codePostal : String
+  * pays : String
+  numeroClient : String <<FK>>
+}
+
+entity "NOTIFICATION" as NOTIFICATION {
+  * idNotification : String <<PK>>
+  --
+  * titre : String
+  * message : String
+  * dateEnvoi : Date
+  * typeNotification : String {MESSAGE, DOCUMENT, ECHEANCE, ALERTE}
+  * lue : Boolean
+  idUtilisateur : String <<FK>>
+}
+
+entity "RENDEZ_VOUS" as RDV {
+  * idRendezVous : String <<PK>>
+  --
+  * date : Date
+  * heure : String
+  * motif : String
+  * statut : String {DEMANDE, CONFIRME, ANNULE, TERMINE}
+  numeroClient : String <<FK>>
+  numeroConseiller : String <<FK>>
+}
+
+' ========== ASSOCIATIONS (Relations Merise) ==========
+
+' Spécialisation Utilisateur
+UTILISATEUR ||--o{ CLIENT : "est un"
+UTILISATEUR ||--o{ CONSEILLER : "est un"
+UTILISATEUR ||--o{ ADMINISTRATEUR : "est un"
+
+' Relations Agence
+AGENCE ||--o{ CLIENT : "domicilie"
+AGENCE ||--o{ CONSEILLER : "emploie"
+
+' Sécurité
+UTILISATEUR ||--o{ LOG : "genère"
+
+' Relations Client
+CLIENT ||..o{ TITULAIRE : "co-titulaire"
+TITULAIRE }o..|| COMPTE : "appartient"
+CLIENT ||--o| ADRESSE : "habite\n(1,1) --- (0,1)"
+CLIENT ||--o{ PRET : "demande\n(1,1) --- (0,n)"
+CLIENT ||--o{ DOCUMENT : "possède\n(1,1) --- (0,n)"
+CLIENT ||--o{ RDV : "demande\n(1,1) --- (0,n)"
+CLIENT ||--o{ SIMULATION : "effectue\n(1,1) --- (0,n)"
+CLIENT ||--o{ CONSEIL : "reçoit\n(1,1) --- (0,n)"
+CLIENT ||--o{ BENEFICIAIRE : "gère"
+
+' Relations Conseiller
+CONSEILLER ||--o{ CLIENT : "conseille\n(0,1) --- (0,n)"
+CONSEILLER ||--o{ RDV : "gère\n(1,1) --- (0,n)"
+
+' Relations Administrateur
+ADMINISTRATEUR ||--o{ UTILISATEUR : "administre\n(1,1) --- (0,n)"
+
+' Relations bancaires
+COMPTE ||--o{ TRANSACTION : "contient\n(1,1) --- (0,n)"
+COMPTE ||--o{ CARTE : "possède"
+' Spécialisation Portefeuille (hérite de Compte)
+COMPTE ||--o| PORTEFEUILLE : "est un"
+
+TRANSACTION ||--o| VIREMENT : "spécialise\n(1,1) --- (0,1)"
+TRANSACTION ||--o| PAIEMENT : "spécialise\n(1,1) --- (0,1)"
+
+' Relations Prêts
+PRET ||--o| PLAN : "possède\n(1,1) --- (0,1)"
+PLAN ||--|{ MENSUALITE : "composé de\n(1,1) --- (1,n)"
+
+' Relations Investissements
+PORTEFEUILLE ||--o{ INVESTISSEMENT : "contient\n(1,1) --- (0,n)"
+INVESTISSEMENT ||--o| ACTION : "spécialise\n(1,1) --- (0,1)"
+INVESTISSEMENT ||--o| OBLIGATION : "spécialise\n(1,1) --- (0,1)"
+
+' Relations Communication
+UTILISATEUR ||--o{ MESSAGE : "envoie\n(1,1) --- (0,n)"
+UTILISATEUR ||--o{ MESSAGE : "reçoit\n(1,1) --- (0,n)"
+CONVERSATION ||--o{ MESSAGE : "contient\n(1,1) --- (0,n)"
+CONVERSATION }o--o{ UTILISATEUR : "participe\n(2,n) --- (0,n)"
+
+' Relations Documents
+DOCUMENT ||--o| RELEVE : "spécialise\n(1,1) --- (0,1)"
+
+' Relations Notifications
+UTILISATEUR ||--o{ NOTIFICATION : "reçoit\n(1,1) --- (0,n)"
+
+note right of AGENCE
+  Structure hierarchique:
+  Les clients et conseillers
+  sont rattachés à une agence.
+end note
+
+note right of PORTEFEUILLE
+  Hérite de COMPTE:
+  Un portefeuille est un type spécial 
+  de compte bancaire.
+end note
+
+note right of UTILISATEUR
+  **Type Utilisateur:**
+  - Client
+  - Conseiller
+  - Administrateur
+  
+  Utilise une approche de 
+  spécialisation/généralisation
+end note
+
+note right of TRANSACTION
+  **Type Transaction:**
+  - DEPOT
+  - RETRAIT
+  - VIREMENT
+  - PAIEMENT_RECURRENT
+  
+  **Statut:**
+  - EN_ATTENTE
+  - VALIDEE
+  - REJETEE
+  - ANNULEE
+end note
+
+note bottom of INVESTISSEMENT
+  **Type Investissement:**
+  - ACTION
+  - OBLIGATION
+end note
+
+note bottom of DOCUMENT
+  **Type Document:**
+  - RELEVE_COMPTE
+  - CONTRAT
+  - JUSTIFICATIF
+  - AUTRE
+end note
+
+@enduml
