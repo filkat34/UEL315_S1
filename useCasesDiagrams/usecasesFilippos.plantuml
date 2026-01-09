@@ -1,6 +1,8 @@
 @startuml Diagramme des cas d'utilisation
 left to right direction
 
+title Diagramme des cas d'utilisation - Application bancaire (Groupe D : M. Chauvet, K. Guillon, F. Katsanos, M. Leyssene)
+
 ' Définition des acteurs '
 :Client:
 :Conseiller:
