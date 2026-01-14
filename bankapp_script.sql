@@ -163,9 +163,61 @@ CREATE TABLE Client_Conseiller (
 );
 
 --- ==========================
---- REQUÊTES SQL
+--- REQUÊTES SQL INSERTION DE DONNÉES (CREATE)
 --- ==========================
 
+--- INSERTION DE DONNÉES
+
+-- 1. Ajout de 5 nouveaux clients
+INSERT OR IGNORE INTO Client (client_id, nom, prenom, email, telephone, adresse)
+VALUES
+  ('CL101','Dupont','Marie','marie.dupont@mail.com','0600000101','10 rue A, Paris'),
+  ('CL102','Martin','Lucas','lucas.martin@mail.com','0600000102','22 rue B, Lyon'),
+  ('CL103','Bernard','Inès','ines.bernard@mail.com','0600000103','5 rue C, Lille'),
+  ('CL104','Petit','Nora','nora.petit@mail.com','0600000104','1 rue D, Nice'),
+  ('CL105','Moreau','Yanis','yanis.moreau@mail.com','0600000105','8 rue E, Bordeaux');
+
+-- 2. Création de 3 comptes pour chaque client
+INSERT OR IGNORE INTO Compte (numero_compte, solde, type_compte, statut, client_id, date_ouverture)
+VALUES
+  ('ACC101C', 12500.00, 'COURANT',       'ACTIF', 'CL101', date('now','-3 years')),
+  ('ACC101E',  4200.00, 'EPARGNE',       'ACTIF', 'CL101', date('now','-2 years')),
+  ('ACC101P',  8000.00, 'PROFESSIONNEL', 'ACTIF', 'CL101', date('now','-1 years')),
+
+  ('ACC102C',   900.00, 'COURANT',       'ACTIF', 'CL102', date('now','-2 years')),
+  ('ACC102E', 11000.00, 'EPARGNE',       'ACTIF', 'CL102', date('now','-1 years')),
+  ('ACC102P',  1500.00, 'PROFESSIONNEL', 'SUSPENDU', 'CL102', date('now','-4 years')),
+
+  ('ACC103C',  -150.00, 'COURANT',       'ACTIF', 'CL103', date('now','-8 months')),
+  ('ACC103E',  2500.00, 'EPARGNE',       'ACTIF', 'CL103', date('now','-6 months')),
+  ('ACC103P',  3200.00, 'PROFESSIONNEL', 'ACTIF', 'CL103', date('now','-10 months')),
+
+  ('ACC104C',  3000.00, 'COURANT',       'ACTIF', 'CL104', date('now','-18 months')),
+  ('ACC104E',  7000.00, 'EPARGNE',       'ACTIF', 'CL104', date('now','-2 months')),
+  ('ACC104P',   200.00, 'PROFESSIONNEL', 'FERME', 'CL104', date('now','-5 years')),
+
+  ('ACC105C',  4500.00, 'COURANT',       'ACTIF', 'CL105', date('now','-1 years')),
+  ('ACC105E',  1500.00, 'EPARGNE',       'ACTIF', 'CL105', date('now','-9 months')),
+  ('ACC105P', 25000.00, 'PROFESSIONNEL', 'ACTIF', 'CL105', date('now','-3 months'));
+
+-- 3. Ajout de 10 transactions pour différents comptes
+INSERT OR IGNORE INTO Transactions (transaction_id, montant, type_transaction, date_transaction, description, statut, compte_id)
+VALUES
+  ('TRX001', 2500.00, 'DEPOT',   datetime('now','-20 days'), 'Salaire',            'VALIDEE',   'ACC101C'),
+  ('TRX002',  120.00, 'RETRAIT', datetime('now','-18 days'), 'Retrait DAB',        'VALIDEE',   'ACC101C'),
+  ('TRX003',  300.00, 'VIREMENT',datetime('now','-12 days'), 'Virement loyer',     'VALIDEE',   'ACC101C'),
+  ('TRX004',   80.00, 'PAIEMENT_RECURRENT', datetime('now','-35 days'), 'Abonnement', 'VALIDEE', 'ACC101C'),
+
+  ('TRX005', 1000.00, 'DEPOT',   datetime('now','-10 days'), 'Prime',              'VALIDEE',   'ACC102E'),
+  ('TRX006',  600.00, 'VIREMENT',datetime('now','-8 days'),  'Virement vers ACC103C', 'VALIDEE','ACC102E'),
+
+  ('TRX007',   60.00, 'RETRAIT', datetime('now','-5 days'),  'Retrait',            'EN_ATTENTE','ACC103C'),
+  ('TRX008',  200.00, 'DEPOT',   datetime('now','-2 days'),  'Dépôt espèces',      'VALIDEE',   'ACC103C'),
+
+  ('TRX009',  150.00, 'PAIEMENT_RECURRENT', datetime('now','-40 days'), 'Facture', 'ANNULEE',  'ACC104C'),
+  ('TRX010',  900.00, 'VIREMENT',datetime('now','-15 days'), 'Virement pro',       'VALIDEE',   'ACC105P');
+
+-- LIRE DES DONNÉES 
 
 
 --- ==========================
