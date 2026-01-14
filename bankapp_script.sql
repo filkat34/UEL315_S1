@@ -248,7 +248,22 @@ WHERE solde < 0;
 --- DONNÉES TEST
 --- ==========================
 
--- Ajouter des administrateurs
+-- Administrateurs
 INSERT OR IGNORE INTO Administrateur (admin_id, nom, prenom, email, niveau) VALUES 
 ('ADMIN002', 'Martin', 'Sophie', 'sophie.martin@bankapp.com', 'ADMIN'),
 ('ADMIN003', 'Bernard', 'Pierre', 'pierre.bernard@bankapp.com', 'ADMIN');
+
+-- Conseillers
+INSERT OR IGNORE INTO Conseiller (conseiller_id, nom, prenom, email, specialite)
+VALUES
+('CO001','Durand','Paul','paul.durand@bankapp.com','Crédit'),
+('CO002','Legrand','Sana','sana.legrand@bankapp.com','Investissement');
+
+-- Attribution des conseillers aux clients
+INSERT OR IGNORE INTO Client_Conseiller (client_id, conseiller_id, statut)
+VALUES
+('CL101','CO001','ACTIF'),
+('CL102','CO001','ACTIF'),
+('CL103','CO002','ACTIF'),
+('CL104','CO002','ACTIF'),
+('CL105','CO001','ACTIF');
