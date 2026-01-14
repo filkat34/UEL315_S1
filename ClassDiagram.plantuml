@@ -1,0 +1,213 @@
+@startuml Class Diagram - Application Bancaire
+
+title Diagramme de classe - Application bancaire (Généré à partir des cas d'utilisation)
+
+' Classes principales '
+
+class Client {
+    -clientId : String
+    -nom : String
+    -prenom : String
+    -email : String
+    -telephone : String
+    -adresse : String
+    -dateCreation : Date
+    -dateMaj : Date
+    --
+    +seConnecter()
+    +seDeconnecter()
+    +mettreAJourAdresse()
+    +consulterSoldes()
+    +effectuerVirement()
+    +deposerFonds()
+    +retirerFonds()
+    +demanderPret()
+    +acheterActions()
+    +vendreActions()
+    +demanderRendezVous()
+    +envoyerMessage()
+    +recevoirNotifications()
+}
+
+class Conseiller {
+    -conseillerId : String
+    -nom : String
+    -prenom : String
+    -specialite : String
+    -dateMaj : Date
+    --
+    +seConnecter()
+    +visualiserComptesClients()
+    +gererPlanningRendezVous()
+    +gererDemandesPret()
+    +fournirConseilsInvestissement()
+    +envoyerMessage()
+    +participer Visioconference()
+}
+
+class Administrateur {
+    -adminId : String
+    -nom : String
+    -prenom : String
+    -niveau : String
+    -dateMaj : Date
+    --
+    +ajouterUtilisateur()
+    +modifierUtilisateur()
+    +supprimerUtilisateur()
+    +attribuerConseiller()
+    +gererDroitsAcces()
+}
+
+class Compte {
+    -numeroCompte : String
+    -solde : Double
+    -type : TypeCompte
+    -dateOuverture : Date
+    -dateMaj : Date
+    --
+    +crediter()
+    +debiter()
+    +consulterSolde()
+    +genererReleve()
+}
+
+class Transaction {
+    -transactionId : String
+    -montant : Double
+    -type : TypeTransaction
+    -dateTransaction : Date
+    -description : String
+    -dateMaj : Date
+    --
+    +executer()
+    +valider()
+    +annuler()
+}
+
+class Pret {
+    -pretId : String
+    -montant : Double
+    -tauxInteret : Double
+    -duree : Integer
+    -statut : StatutPret
+    -dateDebut : Date
+    -dateMaj : Date
+    --
+    +calculerMensualite()
+    +genererPlanRemboursement()
+    +suivreStatut()
+}
+
+class Investissement {
+    -investissementId : String
+    -typeInvestissement : String
+    -montant : Double
+    -dateAchat : Date
+    -prix : Double
+    -dateMaj : Date
+    --
+    +acheter()
+    +vendre()
+    +calculerRendement()
+}
+
+class RendezVous {
+    -rendezVousId : String
+    -dateHeureRendezVous : DateTime
+    -motif : String
+    -statut : StatutRendezVous
+    -dateMaj : Date
+    --
+    +programmer()
+    +confirmer()
+    +annuler()
+}
+
+class Message {
+    -messageId : String
+    -contenu : String
+    -dateEnvoi : DateTime
+    -lu : Boolean
+    -dateMaj : Date
+    --
+    +envoyer()
+    +marquerCommeLu()
+}
+
+class Document {
+    -documentId : String
+    -nom : String
+    -type : String
+    -dateUpload : Date
+    -chemin : String
+    -dateMaj : Date
+    --
+    +deposer()
+    +consulter()
+    +telecharger()
+}
+
+class Notification {
+    -notificationId : String
+    -titre : String
+    -message : String
+    -dateEnvoi : DateTime
+    -lu : Boolean
+    -dateMaj : Date
+    --
+    +envoyer()
+    +marquerCommeLue()
+}
+
+' Énumérations '
+
+enum TypeCompte {
+    COURANT
+    EPARGNE
+    PROFESSIONNEL
+}
+
+enum TypeTransaction {
+    VIREMENT
+    DEPOT
+    RETRAIT
+    PAIEMENT_RECURRENT
+}
+
+enum StatutPret {
+    EN_ATTENTE
+    APPROUVE
+    REFUSE
+    EN_COURS
+    REMBOURSE
+}
+
+enum StatutRendezVous {
+    PROGRAMME
+    CONFIRME
+    ANNULE
+    TERMINE
+}
+
+' Relations '
+
+Client ||--o{ Compte : possède
+Compte ||--o{ Transaction : contient
+Client ||--o{ Pret : demande
+Client ||--o{ Investissement : réalise
+Client ||--o{ RendezVous : demande
+Conseiller ||--o{ RendezVous : gère
+Client ||--o{ Document : dépose
+Client ||--o{ Message : envoie/reçoit
+Conseiller ||--o{ Message : envoie/reçoit
+Client ||--o{ Notification : reçoit
+Conseiller |o--o{ Client : conseille
+Administrateur ||--o{ Client : gère
+Administrateur ||--o{ Conseiller : gère
+
+' Associations avec cardinalités '
+Client "1" -- "0..*" Transaction : effectue
+Conseiller "1" -- "0..*" Client : conseille
+
+@enduml

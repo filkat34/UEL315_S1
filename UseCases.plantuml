@@ -1,0 +1,123 @@
+@startuml Diagramme des cas d'utilisation
+left to right direction
+
+title Diagramme des cas d'utilisation - Application bancaire
+
+' Définition des acteurs '
+:Client:
+:Conseiller:
+:Administrateur:
+rectangle "Système \nde vérification \ndes adresses" AS SYS1 #F9A825
+rectangle "Système \nde paiement" AS SYS2 #F9A825
+rectangle "AI finance \net investissements" AS SYS3 #F9A825
+rectangle "Système \nde notification" AS SYS4 #F9A825
+rectangle "Système \nde gestion des \nprêts" AS SYS8 #F9A825
+rectangle "Système \nd'authentification" AS SYS9 #F9A825
+
+' Définition des packages et cas d'utilisation '
+
+package "Application bancaire" {
+
+		usecase "S'inscrire" as AUTH1 #e67877ff
+		usecase "Se connecter" as AUTH2 #e67877ff
+		usecase "Se déconnecter" as AUTH3 #e67877ff
+		usecase "Vérification des informations \nde connexion" as AUTH4 #e67877ff
+
+		usecase "Visualiser soldes et historiques" as TRANS1 #C8E6C9
+		usecase "Déposer/Retirer des fonds" as TRANS2 #C8E6C9
+		usecase "Faire un virement interne/externe" as TRANS3 #C8E6C9
+		usecase "Générer un relevé de transaction" as TRANS4 #C8E6C9
+		usecase "Mettre en place un paiement récurrent" as TRANS5 #C8E6C9
+		usecase "Valider le paiement ou \nle transfert de fonds" as TRANS6 #C8E6C9
+	
+		usecase "Demander un prêt" as LOAN1 #FFF9C4
+		usecase "Demander à simuler un prêt" as LOAN4 #FFF9C4
+		usecase "Suivre sa demande de prêt" as LOAN2 #FFF9C4
+		usecase "Visualiser son plan \nde remboursement" as LOAN3 #FFF9C4
+		usecase "Générer la simulation de prêt" as LOAN5 #FFF9C4
+	
+		usecase "Acheter/vendre actions, obligations" as INVEST1 #B2F7EF
+		usecase "Suivre ses investissements" as INVEST2 #B2F7EF
+		usecase "Demander des conseils \nd'investissement" as INVEST3 #B2F7EF
+		usecase "Fournir des conseils \nd'investissement" as INVEST4 #B2F7EF
+	
+		usecase "Consulter ses relevés et documents" as DOC1 #D7C4F3
+		usecase "Déposer des documents" as DOC2	 #D7C4F3
+		
+		usecase "Recevoir des notifications" as NOT1 #f3dfc4ff
+		usecase "Envoyer des notifications \n(messages, documents)" as NOT2 #f3dfc4ff
+	
+		usecase "Mettre à jour son adresse" as ADD1 #BBDEFB
+		usecase "Vérifier l'adresse du client" as ADD2 #BBDEFB
+	
+		usecase "Demander un rendez-vous \navec un conseiller" as RDV1 #CFFDE1
+	
+		usecase "Envoyer/Recevoir des messages" as MSG1#C8E6C9
+		usecase "Consulter l'historique \ndes conversations" as MSG3 #C8E6C9
+		usecase "Participer à une consultation \npar visioconférence" as MSG4 #C8E6C9
+	
+		usecase "Visualiser les comptes des clients" as DASH1 #FFF9C4
+		usecase "Gérer le planning \ndes rendez-vous avec les clients" as DASH2 #FFF9C4
+		usecase "Gérer les demandes de prêt \ndes clients" as DASH3 #FFF9C4
+	
+		usecase "Ajouter, modifier, supprimer \ndes utilisateurs" as ADMIN1 #FFCDD2
+		usecase "Attribuer un conseiller à un client" as ADMIN2 #FFCDD2
+		usecase "Gérer les droits d'accès" as ADMIN3 #FFCDD2
+	}
+
+' Associations entre acteurs et cas d'utilisation '
+
+AUTH2 ..> AUTH1 :<<include>>
+AUTH2 <. AUTH3 :<<extend>>
+AUTH2 ..> AUTH4 :<<include>>
+AUTH4 --> SYS9
+
+:Client: --> TRANS1
+:Client: --> TRANS2
+:Client: --> TRANS3
+:Client: --> TRANS4
+:Client: --> TRANS5
+TRANS2 ..> TRANS6 : <<include>>
+TRANS3 ..> TRANS6 : <<include>>
+TRANS5 ..> TRANS6 : <<include>>
+TRANS6 --> SYS2
+
+:Client: --> LOAN1
+:Client: --> LOAN4
+LOAN1 <.. LOAN2 : <<extend>>
+LOAN1 <.. LOAN3 : <<extend>>
+LOAN4 ..>  LOAN5 : <<include>>
+LOAN5 --> SYS8
+
+:Client: --> INVEST1
+:Client: --> INVEST3
+INVEST1 <.. INVEST2 : <<extend>>
+INVEST3 ..> INVEST4 : <<include>>
+INVEST4 --> SYS3
+
+:Client: --> DOC1
+:Client: --> DOC2
+
+:Client: --> NOT1
+NOT1 ..> NOT2 : <<include>>
+NOT2 --> SYS4
+
+:Client: --> ADD1
+ADD1 ..> ADD2 : <<include>>
+ADD2 --> SYS1
+
+:Client: --> RDV1
+
+:Client: --> MSG1
+:Client: --> MSG3
+:Client: --> MSG4
+:Conseiller: --> DASH1
+:Conseiller: --> DASH2
+:Conseiller: --> DASH3
+:Conseiller: --> MSG1
+:Conseiller: --> MSG3
+:Conseiller: --> MSG4
+:Administrateur: --> ADMIN1
+:Administrateur: --> ADMIN2
+:Administrateur: --> ADMIN3
+@enduml
