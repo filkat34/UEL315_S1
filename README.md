@@ -22,3 +22,7 @@ Rendre dans un fichier ZIP :
 
 - [Looping](https://www.looping-mcd.fr/)
 - [Umbrello](https://apps.kde.org/fr/umbrello/)
+
+## Pour s'entraîner au SQL
+
+[SQLBolt](https://sqlbolt.com/)
