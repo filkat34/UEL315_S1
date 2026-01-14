@@ -168,7 +168,7 @@ CREATE TABLE Client_Conseiller (
 
 --- CREATE
 INSERT INTO Client (client_id, nom, prenom, email, telephone, adresse)
-VALUES ('ADMIN004','Petit','Nora','nora.petit@mail.com','0600000004','1 rue D, Nice');
+VALUES ('CL004','Petit','Nora','nora.petit@mail.com','0600000004','1 rue D, Nice');
 
 --- READ
 SELECT * FROM Client WHERE client_id = 'CL001';
