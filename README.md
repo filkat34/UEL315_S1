@@ -18,6 +18,15 @@ Rendre dans un fichier ZIP :
 - Télécharger et installer [DBBrowser](https://sqlitebrowser.org/) pour pouvoir gérer une base de données SQLite
 - Se renseigner sur les spécificités de [SQLite](https://sqlite.org/lang.html)
 
+# A faire
+
+- [ ] Se partager les requêtes SQL
+- [ ] Créer une branche du dépôt et travailler sur ses requêtes dans le fichier `bankapp_script.sql`
+- [ ] Tester ses requêtes en les insérant à la base grâce à DB Browser
+- [ ] Prendre des captures d'écran de ce que vous faites sur DB Browser et les déposer dans le dossier `docs` du dépôt
+- [ ] Faire sa demande de tirage
+- [ ] Filippos se charge de recréer la base de données une fois le fichier `bankapp_script.sql` terminé car il y aura forcément des conflits au fur et à mesure de l'avancement. Il déposera tout sur Moodle.
+
 ## Autres logiciels de modelisation opensource
 
 - [Looping](https://www.looping-mcd.fr/)
