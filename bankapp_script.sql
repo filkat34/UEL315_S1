@@ -175,7 +175,7 @@ VALUES
   ('CL101','Dupont','Marie','marie.dupont@mail.com','0600000101','10 rue A, Paris'),
   ('CL102','Martin','Lucas','lucas.martin@mail.com','0600000102','22 rue B, Lyon'),
   ('CL103','Bernard','Inès','ines.bernard@mail.com','0600000103','5 rue C, Lille'),
-  ('CL104','Petit','Nora','nora.petit@mail.com','0600000104','1 rue D, Nice'),
+  ('CL104','Cassie','Nora','nora.cassie@mail.com','0600000104','1 rue D, Nice'),
   ('CL105','Moreau','Yanis','yanis.moreau@mail.com','0600000105','8 rue E, Bordeaux');
 
 -- 2. Création de 3 comptes pour chaque client
