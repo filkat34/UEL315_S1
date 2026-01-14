@@ -164,7 +164,7 @@ CREATE TABLE Client_Conseiller (
 );
 
 --- ==========================================
---- REQUÊTES SQL INSERTION DE DONNÉES (CREATE)
+--- REQUÊTES SQL
 --- ==========================================
 
 --- INSERTION DE DONNÉES
