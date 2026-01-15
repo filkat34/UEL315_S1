@@ -1,4 +1,16 @@
-# UEL315 Base de données
+# UEL315 Base de données (Groupe D)
+
+## Membres du groupe
+
+## Membres du groupe
+
+| Etudiant.e  |   Alias    |
+| :---------: | :--------: |
+| Mathilde C. | Clouddy23  |
+|   Kamo G.   | Spaghette5 |
+| Mathieu L.  |  mathleys  |
+| Filippos K. |  filkat34  |
+| Yamine D. ? | yamine-dr ? |
 
 ## Objectifs
 
