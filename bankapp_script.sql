@@ -2,7 +2,9 @@
 -- Essentiel pour maintenir l'intégrité référentielle
 PRAGMA foreign_keys = ON;
 
--- CRÉATION DES TABLES PRINCIPALES
+--- ==========================================
+--- CREATION DES TABLES
+--- ==========================================
 
 -- Table Client
 CREATE TABLE Client (
@@ -322,7 +324,7 @@ SELECT mois,
 FROM MonthlyStats;
 
 --- ==========================
---- DONNÉES TEST
+--- ACTEURS BANCAIRES
 --- ==========================
 
 -- Administrateurs
@@ -331,10 +333,10 @@ INSERT OR IGNORE INTO Administrateur (admin_id, nom, prenom, email, niveau) VALU
 ('ADMIN003', 'Bernard', 'Pierre', 'pierre.bernard@bankapp.com', 'ADMIN');
 
 -- Conseillers
-INSERT OR IGNORE INTO Conseiller (conseiller_id, nom, prenom, email, specialite)
+INSERT OR IGNORE INTO Conseiller (conseiller_id, nom, prenom, email, specialite, date_embauche, date_maj)
 VALUES
-('CO001','Durand','Paul','paul.durand@bankapp.com','Crédit'),
-('CO002','Legrand','Sana','sana.legrand@bankapp.com','Investissement');
+('CO001','Durand','Paul','paul.durand@bankapp.com','Crédit', date('now'), datetime('now')),
+('CO002','Legrand','Sana','sana.legrand@bankapp.com','Investissement', date('now'), datetime('now'));
 
 -- Attribution des conseillers aux clients
 INSERT OR IGNORE INTO Client_Conseiller (client_id, conseiller_id, statut)
