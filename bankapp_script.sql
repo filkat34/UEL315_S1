@@ -35,7 +35,7 @@ CREATE TABLE Administrateur (
     email TEXT UNIQUE NOT NULL,
     niveau TEXT NOT NULL,
     date_creation TEXT NOT NULL DEFAULT (date('now')),
-    date_maj TEXT NOT NULL DEFAULT (datetime('now'))
+    date_maj TEXT NOT NULL DEFAULT (datetime('now')) 
 );
 
 -- Table Compte
@@ -167,7 +167,7 @@ CREATE TABLE Client_Conseiller (
 --- REQUÊTES SQL
 --- ==========================================
 
---- INSERTION DE DONNÉES
+--- INSERTION DE DONNÉES ---
 
 -- 1. Ajout de 5 nouveaux clients
 INSERT OR IGNORE INTO Client (client_id, nom, prenom, email, telephone, adresse)
@@ -218,7 +218,7 @@ VALUES
   ('TRX009',  150.00, 'PAIEMENT_RECURRENT', datetime('now','-40 days'), 'Facture', 'ANNULEE',  'ACC104C'),
   ('TRX010',  900.00, 'VIREMENT',datetime('now','-15 days'), 'Virement pro',       'VALIDEE',   'ACC105P');
 
---- LIRE DES DONNÉES 
+--- LIRE DES DONNÉES ---
 
 --- 1. Sélection des clients ayant un solde total > 10000€
 SELECT
@@ -242,6 +242,56 @@ ORDER BY datetime(t.date_transaction) DESC;
 SELECT numero_compte, client_id, type_compte, solde
 FROM Compte
 WHERE solde < 0;
+
+
+--- METTRE A JOUR DES DONNÉES ---
+
+-- 1. Mettre à jour le numéro de téléphone d'un client spécifique
+-- Cible : Client 'CL101'
+UPDATE Client
+SET telephone = '0699887766',
+    date_maj = datetime('now')
+WHERE client_id = 'CL101';
+
+-- 2. Augmenter le découvert autorisé pour certains comptes
+-- Cible : +500€ pour tous les comptes de type 'COURANT'
+UPDATE Compte
+SET decouvert_autorise = decouvert_autorise + 500,
+    date_maj = datetime('now')
+WHERE type_compte = 'COURANT';
+
+-- 3. Modifier le statut des transactions en attente
+-- Action : Valider toutes les transactions actuellement 'EN_ATTENTE'
+UPDATE Transactions
+SET statut = 'VALIDEE',
+    date_maj = datetime('now')
+WHERE statut = 'EN_ATTENTE';
+
+
+--- SUPPRIMER DES DONNÉES ---
+
+-- 1. Supprimer les comptes inactifs depuis plus de 2 ans
+-- Logique : On identifie les comptes n'ayant aucune transaction datée de moins de 2 ans.
+DELETE FROM Compte
+WHERE numero_compte NOT IN (
+    SELECT DISTINCT compte_id
+    FROM Transactions
+    WHERE date_transaction >= datetime('now', '-2 years')
+);
+
+-- 2. Effacer les transactions refusées ou annulées
+DELETE FROM Transactions
+WHERE statut = 'ANNULEE';
+
+-- 3. Retirer les clients sans transactions actives
+-- Logique : Supprime les clients qui ne sont associés à aucune transaction (via leurs comptes).
+DELETE FROM Client
+WHERE client_id NOT IN (
+    SELECT DISTINCT c.client_id
+    FROM Client c
+    JOIN Compte cp ON c.client_id = cp.client_id
+    JOIN Transactions t ON cp.numero_compte = t.compte_id
+);
 
 
 --- ==========================
