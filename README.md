@@ -41,9 +41,9 @@
 
 ### Création de la base de données
 
-[x] Création d'une base de données SQLite `bankapp.db` grâce au logiciel _DB Browser_
-[x] Ecriture des requêtes SQL de création des différentes tables à partir du MCD
-[x] Exécution du script de création des tables sur DB Browser
+- [x] Création d'une base de données SQLite `bankapp.db` grâce au logiciel _DB Browser_
+- [x] Ecriture des requêtes SQL de création des différentes tables à partir du MCD
+- [x] Exécution du script de création des tables sur DB Browser
 
 ![Création des tables](docs/creationTables.png)
 
