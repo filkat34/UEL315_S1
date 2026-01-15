@@ -90,18 +90,28 @@
 ### 5. Requêtes Complexes
 
 - [x] Compter le nombre total de transactions par type de compte.
+![Requete1](docs/requetes_complexes/requete1.png)
 - [x] Calculer la moyenne des soldes de tous les comptes épargne.
+![Requete2](docs/requetes_complexes/requete2.png)
 - [x] Trouver les 5 clients les plus actifs en termes de transactions.
+![Requete3](docs/requetes_complexes/requete3.png)
 - [x] Lister les prêts dont la durée restante est inférieure à un an.
+![Requete4](docs/requetes_complexes/requete4.png)
 - [x] Afficher le total des prêts accordés par conseiller.
+![Requete5](docs/requetes_complexes/requete5.png)
 
 ### 6. Requêtes Avancées
 
 - [x] Identifier les clients avec un total d'investissements supérieur à leur solde total.
+![Requete1](docs/requetes_avancees/requete1.png)
 - [x] Trouver les comptes ayant le plus haut taux de transactions réussies.
+![Requete2](docs/requetes_avancees/requete2.png)
 - [x] Lister les clients qui n'ont pas utilisé de services de prêt ou d'investissement.
+![Requete3](docs/requetes_avancees/requete3.png)
 - [x] Déterminer le montant total des intérêts générés par les prêts.
+![Requete4](docs/requetes_avancees/requete4.png)
 - [x] Calculer la variation mensuelle du nombre de transactions.
+![Requete5](docs/requetes_avancees/requete5.png)
 
 ## Webographie
 

@@ -243,6 +243,83 @@ SELECT numero_compte, client_id, type_compte, solde
 FROM Compte
 WHERE solde < 0;
 
+--- REQUÊTES COMPLEXES
+
+-- Compter le nombre total de transactions par type de compte
+SELECT c.type_compte, COUNT(t.transaction_id) as nombre_transactions
+FROM Compte c
+LEFT JOIN Transactions t ON c.numero_compte = t.compte_id
+GROUP BY c.type_compte;
+
+-- Calculer la moyenne des soldes de tous les comptes épargne
+SELECT AVG(solde) as moyenne_solde_epargne
+FROM Compte
+WHERE type_compte = 'EPARGNE';
+
+-- Trouver les 5 clients les plus actifs en termes de transactions
+SELECT cl.nom, cl.prenom, COUNT(t.transaction_id) as total_transactions
+FROM Client cl
+JOIN Compte c ON cl.client_id = c.client_id
+JOIN Transactions t ON c.numero_compte = t.compte_id
+GROUP BY cl.client_id
+ORDER BY total_transactions DESC
+LIMIT 5;
+
+-- Lister les prêts dont la durée restante est inférieure à un an
+SELECT *
+FROM Pret
+WHERE date(date_debut, '+' || duree_mois || ' months') < date('now', '+1 year')
+  AND statut = 'EN_COURS';
+
+-- Afficher le total des prêts accordés par conseiller
+SELECT co.nom, co.prenom, COUNT(p.pret_id) as nombre_prets, SUM(p.montant) as montant_total
+FROM Conseiller co
+JOIN Pret p ON co.conseiller_id = p.conseiller_id
+WHERE p.statut IN ('APPROUVE', 'EN_COURS', 'REMBOURSE')
+GROUP BY co.conseiller_id;
+
+--- REQUÊTES AVANCÉES
+
+-- Identifier les clients avec un total d'investissements supérieur à leur solde total
+SELECT c.client_id, c.nom, c.prenom,
+       SUM(i.montant) as total_investissements,
+       (SELECT SUM(solde) FROM Compte WHERE client_id = c.client_id) as total_solde
+FROM Client c
+JOIN Investissement i ON c.client_id = i.client_id
+GROUP BY c.client_id
+HAVING total_investissements > total_solde;
+
+-- Trouver les comptes ayant le plus haut taux de transactions réussies
+SELECT c.numero_compte,
+       (CAST(SUM(CASE WHEN t.statut = 'VALIDEE' THEN 1 ELSE 0 END) AS REAL) / COUNT(t.transaction_id)) * 100 as taux_reussite
+FROM Compte c
+JOIN Transactions t ON c.numero_compte = t.compte_id
+GROUP BY c.numero_compte
+ORDER BY taux_reussite DESC;
+
+-- Lister les clients qui n'ont pas utilisé de services de prêt ou d'investissement
+SELECT client_id, nom, prenom
+FROM Client
+WHERE client_id NOT IN (SELECT client_id FROM Pret)
+  AND client_id NOT IN (SELECT client_id FROM Investissement);
+
+-- Déterminer le montant total des intérêts générés par les prêts
+SELECT SUM((mensualite * duree_mois) - montant) as total_interets
+FROM Pret
+WHERE statut IN ('EN_COURS', 'REMBOURSE') AND mensualite IS NOT NULL;
+
+-- Calculer la variation mensuelle du nombre de transactions
+WITH MonthlyStats AS (
+    SELECT strftime('%Y-%m', date_transaction) as mois,
+           COUNT(*) as nb_transactions
+    FROM Transactions
+    GROUP BY mois
+)
+SELECT mois,
+       nb_transactions,
+       LAG(nb_transactions, 1, 0) OVER (ORDER BY mois) as mois_precedent,
+       (nb_transactions - LAG(nb_transactions, 1, 0) OVER (ORDER BY mois)) as variation
+FROM MonthlyStats;
 
 --- ==========================
 --- DONNÉES TEST
