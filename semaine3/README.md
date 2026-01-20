@@ -41,7 +41,7 @@ console.log(newBook);
 
 Sortie console :
 
-```json
+```javascript
 {
   acknowledged: true,
   insertedId: ObjectId('696ea8e22cb59dfa64fc830e')
@@ -66,7 +66,7 @@ console.log(newArticle);
 
 Sortie console :
 
-```json
+```javascript
 {
   acknowledged: true,
   insertedId: ObjectId('696ea8e22cb59dfa64fc830f')
@@ -83,7 +83,7 @@ console.log("Number of books:", bookCount);
 
 Sortie console :
 
-```bash
+```console
 Nombre de livres:
 92
 ```
@@ -101,7 +101,7 @@ console.log(`Nombre de publications de ${authorName}:`, authorCount);
 
 Sortie console :
 
-```bash
+```console
 Nombre de publications de Filippos Katsanos:
 1
 ```
@@ -118,7 +118,7 @@ console.log("Nombre d'articles depuis 2012:", articleCountSince2012);
 
 Sortie console :
 
-```bash
+```console
 Nombre d'articles depuis 2012:
 230
 ```
