@@ -465,7 +465,7 @@ db.getCollection("dblp")
 
 Playground result (extrait) :
 
-````js
+```js
 [
   {
     "title": "Shared Interfaces for Co-located Interaction."
@@ -507,9 +507,4 @@ Playground result (extrait) :
     "title": "The Smart SemProM."
   } [...]
 ]
-```,
-  {
-    "title": "The Smart SemProM."
-  } [...]
-]
-````
+```
