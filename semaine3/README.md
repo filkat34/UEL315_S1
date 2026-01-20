@@ -78,7 +78,7 @@ Sortie console :
 ```javascript
 // Afficher le nombre de publications de type « Book »
 const bookCount = db.getCollection("dblp").countDocuments({ type: "Book" });
-console.log("Number of books:", bookCount);
+console.log("Nombre de livres:", bookCount);
 ```
 
 Sortie console :
