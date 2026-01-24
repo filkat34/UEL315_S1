@@ -56,7 +56,7 @@
 
 Pour collaborer l'équipe a travaillé sur le dépôt Github public suivant : [https://github.com/filkat34/UEL315](https://github.com/filkat34/UEL315).
 
-Le travail de cette semaine se trouve dans le dossier `semaine3`
+Le travail de cette semaine se trouve dans le dossier `semaine3` où sont également les fichiers de code des différentes requêtes.
 
 ## Exercice 1
 
